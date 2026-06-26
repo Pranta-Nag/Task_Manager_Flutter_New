@@ -10,6 +10,6 @@ class CancledTaskScreen extends StatefulWidget {
 class _CancledTaskScreenState extends State<CancledTaskScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Scaffold();
   }
 }

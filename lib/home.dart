@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
       home: const SplashScreen(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-         inputDecorationTheme: InputDecorationTheme(
+         inputDecorationTheme: const InputDecorationTheme(
           filled: true,
           fillColor: Colors.white,
 
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         filledButtonTheme: FilledButtonThemeData(
           style: FilledButton.styleFrom(
             backgroundColor: AppColor.primaryColor,
-                fixedSize: Size.fromWidth(double.maxFinite),
+                fixedSize: const Size.fromWidth(double.maxFinite),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8)
             )

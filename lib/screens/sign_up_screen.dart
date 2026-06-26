@@ -15,12 +15,11 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   late final TapGestureRecognizer _signInRecognizer;
 
-  TextEditingController _emailTEController = TextEditingController();
-  TextEditingController _firstNameTEController = TextEditingController();
-  TextEditingController _lastNameTEController = TextEditingController();
-  TextEditingController _phoneTEController = TextEditingController();
-  TextEditingController _passwordTEController = TextEditingController();
-
+  final TextEditingController _emailTEController = TextEditingController();
+  final TextEditingController _firstNameTEController = TextEditingController();
+  final TextEditingController _lastNameTEController = TextEditingController();
+  final TextEditingController _phoneTEController = TextEditingController();
+  final TextEditingController _passwordTEController = TextEditingController();
 
   @override
   void initState() {
@@ -59,14 +58,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 100),
-
                 Text(
                   'Join with US',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
-
                 const SizedBox(height: 25),
-
                 TextFormField(
                   controller: _emailTEController,
                   keyboardType: TextInputType.emailAddress,
@@ -74,9 +70,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     hintText: 'Email',
                   ),
                 ),
-
                 const SizedBox(height: 10),
-
                 TextFormField(
                   controller: _firstNameTEController,
                   obscureText: true,
@@ -84,9 +78,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     hintText: 'First name',
                   ),
                 ),
-
                 const SizedBox(height: 10),
-
                 TextFormField(
                   controller: _lastNameTEController,
                   obscureText: true,
@@ -94,9 +86,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     hintText: 'Last name',
                   ),
                 ),
-
                 const SizedBox(height: 10),
-
                 TextFormField(
                   controller: _phoneTEController,
                   keyboardType: TextInputType.number,
@@ -105,9 +95,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     hintText: 'Mobile',
                   ),
                 ),
-
                 const SizedBox(height: 10),
-
                 TextFormField(
                   controller: _passwordTEController,
                   obscureText: true,
@@ -115,9 +103,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     hintText: 'Password',
                   ),
                 ),
-
                 const SizedBox(height: 20),
-
                 SizedBox(
                   width: double.infinity,
                   child: FilledButton(
@@ -135,9 +121,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 35),
-
                 Center(
                   child: Column(
                     children: [
