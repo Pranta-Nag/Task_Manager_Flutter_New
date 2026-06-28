@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:taskmanager/widgets/app_color.dart';
+import 'package:taskmanager/utils/app_color.dart';
 
 class TmAppbar extends StatelessWidget implements PreferredSize {
   const TmAppbar({

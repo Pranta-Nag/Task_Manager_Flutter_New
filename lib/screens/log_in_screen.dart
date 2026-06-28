@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmanager/screens/main_nav_screen.dart';
 import 'package:taskmanager/screens/sign_up_screen.dart';
-import 'package:taskmanager/widgets/app_color.dart';
+import 'package:taskmanager/utils/app_color.dart';
 import 'package:taskmanager/widgets/screen_background.dart';
 
 class LoginScreen extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:taskmanager/screens/log_in_screen.dart';
-import 'package:taskmanager/widgets/assets_path.dart';
+import 'package:taskmanager/utils/assets_path.dart';
 import 'package:taskmanager/widgets/screen_background.dart';
 
 class SplashScreen extends StatefulWidget {

@@ -3,7 +3,7 @@ import 'package:taskmanager/screens/cancled_task_screen.dart';
 import 'package:taskmanager/screens/completed_task_screen.dart';
 import 'package:taskmanager/screens/new_task_screen.dart';
 import 'package:taskmanager/screens/progress_screen.dart';
-import 'package:taskmanager/widgets/app_color.dart';
+import 'package:taskmanager/utils/app_color.dart';
 import 'package:taskmanager/widgets/tm_appbar.dart';
 
 class MainNavScreen extends StatefulWidget {
