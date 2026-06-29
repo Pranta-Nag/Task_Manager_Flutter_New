@@ -6,8 +6,8 @@ class ApiCaller {
   static Future<ApiResponse> getRequest({required String url}) async {
     Response response = await get(Uri.parse(url), headers: {'token': ''});
 
-    print('URL=== $url');
-    print('response === ${response.body}');
+   // print('URL=== $url');
+   // print('response === ${response.body}');
 
     if (response.statusCode == 200) {
       return ApiResponse(
@@ -31,19 +31,20 @@ class ApiCaller {
           "Content-Type": "application/json",
           "Accept": "application/json",
         },
-        body: body != null ? jsonEncode(body) : null);
-      print('URL=== $url');
-      print('response === ${response.body}');
+      body: body != null ? jsonEncode(body) : null);
+     // print('URL=== $url');
+     // print('response === ${response.body}');
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       return ApiResponse(
           responseCode: response.statusCode,
-          responseData: response.body,
-          isSuccess: true);
+          responseData: jsonDecode(response.body),
+          isSuccess: true,
+          );
     } else {
       return ApiResponse(
         responseCode: response.statusCode,
-        responseData: body,
+        responseData: jsonDecode(response.body),
         isSuccess: false,
         errorMessage: body?['message']?.toString(),
       );

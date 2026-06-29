@@ -39,6 +39,7 @@ dependencies:
   email_validator: ^3.0.0
   phone_numbers_parser: ^9.0.23
   http: ^1.6.0
+  shared_preferences: ^2.5.3
 
 dev_dependencies:
   flutter_test:

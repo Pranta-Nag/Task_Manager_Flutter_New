@@ -65,14 +65,14 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          Spacer(),
+                         const Spacer(),
                           IconButton(
                             onPressed: () {},
-                            icon: Icon(Icons.edit_note, color: Colors.amber),
+                            icon:const Icon(Icons.edit_note, color: Colors.amber),
                           ),
                           IconButton(
                             onPressed: () {},
-                            icon: Icon(Icons.delete, color: Colors.red),
+                            icon: const Icon(Icons.delete, color: Colors.red),
                           ),
                         ],
                       ),
@@ -87,3 +87,4 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
     );
   }
 }
+

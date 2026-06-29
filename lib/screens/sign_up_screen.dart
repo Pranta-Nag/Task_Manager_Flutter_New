@@ -216,7 +216,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Future<void> signUp() async {
     final ApiResponse response =
-        await ApiCaller.PostRequest(url: Urls.signUpUrl, body: {
+      await ApiCaller.PostRequest(url: Urls.signUpUrl, body: {
       "email": _emailTEController.text,
       "firstName": _firstNameTEController.text,
       "lastName": _lastNameTEController.text,

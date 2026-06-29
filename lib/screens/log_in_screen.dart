@@ -1,8 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:taskmanager/data/auth_controller.dart';
+import 'package:taskmanager/data/model/api_response.dart';
+import 'package:taskmanager/data/model/user_data.dart';
+import 'package:taskmanager/data/services/api_caller.dart';
 import 'package:taskmanager/screens/main_nav_screen.dart';
 import 'package:taskmanager/screens/sign_up_screen.dart';
 import 'package:taskmanager/utils/app_color.dart';
+import 'package:taskmanager/utils/urls/urls.dart';
 import 'package:taskmanager/widgets/screen_background.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -14,6 +19,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   late final TapGestureRecognizer _signUpRecognizer;
+
+  final TextEditingController _emailTEController = TextEditingController();
+  final TextEditingController _passwordTEController = TextEditingController();
 
   @override
   void initState() {
@@ -32,6 +40,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
+    _emailTEController.dispose();
+    _passwordTEController.dispose();
     _signUpRecognizer.dispose();
     super.dispose();
   }
@@ -47,42 +57,32 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 180),
-
                 Text(
                   'Get Started With',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
-
                 const SizedBox(height: 25),
-
                 TextFormField(
+                  controller: _emailTEController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
                     hintText: 'Email',
                   ),
                 ),
-
                 const SizedBox(height: 10),
-
                 TextFormField(
+                  controller: _passwordTEController,
                   obscureText: true,
                   decoration: const InputDecoration(
                     hintText: 'Password',
                   ),
                 ),
-
                 const SizedBox(height: 20),
-
                 SizedBox(
                   width: double.infinity,
                   child: FilledButton(
                     onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const MainNavScreen(),
-                        ),
-                      );
+                      signIn();
                     },
                     child: const Icon(
                       Icons.arrow_circle_right_outlined,
@@ -90,9 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 35),
-
                 Center(
                   child: Column(
                     children: [
@@ -103,7 +101,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextStyle(color: Colors.grey),
                         ),
                       ),
-
                       RichText(
                         text: TextSpan(
                           text: "Don't have an account? ",
@@ -132,5 +129,48 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> signIn() async {
+    final ApiResponse response = await ApiCaller.PostRequest(
+      url: Urls.logInUrl,
+      body: {
+        "email": _emailTEController.text.trim(),
+        "password": _passwordTEController.text,
+      },
+    );
+
+    if (response.isSuccess) {
+      UserModel model = UserModel.fromJson(response.responseData['data']);
+
+      String accessToken = response.responseData['token'];
+
+      await AuthController.saveUserData(model, accessToken);
+
+      if (!mounted) return;
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const MainNavScreen(),
+        ),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Sign In Successful!'),
+        ),
+      );
+    } else {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            response.responseData['message'] ?? 'Login Failed',
+          ),
+        ),
+      );
+    }
   }
 }
