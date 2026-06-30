@@ -1,12 +1,10 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:phone_numbers_parser/phone_numbers_parser.dart';
 import 'package:taskmanager/data/model/api_response.dart';
 import 'package:taskmanager/data/services/api_caller.dart';
 import 'package:taskmanager/screens/log_in_screen.dart';
-import 'package:taskmanager/screens/main_nav_screen.dart';
 import 'package:taskmanager/utils/app_color.dart';
 import 'package:taskmanager/utils/urls/urls.dart';
 import 'package:taskmanager/widgets/screen_background.dart';
