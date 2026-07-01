@@ -5,20 +5,15 @@ import 'package:taskmanager/data/model/api_response.dart';
 
 class ApiCaller {
   static Future<ApiResponse> getRequest({required String url}) async {
-    Response response = await get(
-      Uri.parse(url),
-      headers: {
-        'token': AuthController.accessToken ?? '',
-      },
-    );
-
+    Response response = await get(Uri.parse(url),
+        headers: {'token': AuthController.accessToken ?? ''});
     // print('URL=== $url');
     // print('response === ${response.body}');
 
     if (response.statusCode == 200) {
       return ApiResponse(
           responseCode: response.statusCode,
-          responseData: response.body,
+          responseData: jsonDecode(response.body),
           isSuccess: true);
     } else {
       return ApiResponse(

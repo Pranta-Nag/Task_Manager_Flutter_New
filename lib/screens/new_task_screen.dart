@@ -1,5 +1,13 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:taskmanager/data/model/api_response.dart';
+import 'package:taskmanager/data/model/task_status_count.dart';
+import 'package:taskmanager/data/model/task_status_model.dart';
+import 'package:taskmanager/data/services/api_caller.dart';
+import 'package:taskmanager/screens/add_new_task_screen.dart';
+import 'package:taskmanager/utils/urls/urls.dart';
+import 'package:taskmanager/widgets/task_card.dart';
 import 'package:taskmanager/widgets/task_count_by_status.dart';
 
 class NewTaskScreen extends StatefulWidget {
@@ -10,8 +18,61 @@ class NewTaskScreen extends StatefulWidget {
 }
 
 class _NewTaskScreenState extends State<NewTaskScreen> {
-  late final String title;
-  late final int count;
+  // late final String title;
+  // late final int count;
+
+  @override
+  void initState() {
+    super.initState();
+    getAllTaskCount();
+    getAllTaskStatus();
+  }
+
+// Function to get all task counts by status
+  List<TaskStatusCount> taskCount = [];
+
+  Future<void> getAllTaskCount() async {
+    final ApiResponse response =
+        await ApiCaller.getRequest(url: Urls.getTaskCountURL);
+
+    List<TaskStatusCount> taskC = [];
+
+    if (response.isSuccess) {
+      for (Map<String, dynamic> jsonData in (response.responseData['data'])) {
+        taskC.add(TaskStatusCount.fromJson(jsonData));
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(jsonDecode(response.responseData['data']))));
+    }
+
+    setState(() {
+      taskCount = taskC;
+    });
+  }
+
+// Function to get all tasks with status "New"
+  List<TaskModel> tasks = [];
+
+  Future<void> getAllTaskStatus() async {
+    final ApiResponse response =
+        await ApiCaller.getRequest(url: Urls.getTaskStatusURL('New'));
+
+    List<TaskModel> task = [];
+
+    if (response.isSuccess) {
+      for (Map<String, dynamic> jsonData in (response.responseData['data'])) {
+        task.add(TaskModel.fromJson(jsonData));
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(jsonDecode(response.responseData['data']))));
+    }
+
+    setState(() {
+      tasks = task;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +85,13 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
               height: 90,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
-                itemCount: 4,
+                itemCount: taskCount.length,
                 itemBuilder: (context, index) {
-                  return const TaskCountByStatus(title: 'New', count: 20);
+                  final Tcount = taskCount[index];
+                  return TaskCountByStatus(
+                    title: Tcount.sId.toString(),
+                    count: Tcount.sum!.toInt(),
+                  );
                 },
                 separatorBuilder: (BuildContext context, int index) {
                   return const SizedBox(width: 15);
@@ -36,55 +101,31 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: 15,
+              itemCount: tasks.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(
-                    "Task ${index}",
-                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          color: Colors.black,
-                          fontSize: 22,
-                        ),
-                  ),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                          'Loram operates around the world from 7 regionally located offices in the United States (2), Brazil, the United Kingdom, Finland, Australia and India.'),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Text('Date: 10-10-2026'),
-                      Row(
-                        children: [
-                          Chip(
-                            label: Text('New'),
-                            backgroundColor: Colors.blue,
-                            labelStyle: TextStyle(color: Colors.white),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                         const Spacer(),
-                          IconButton(
-                            onPressed: () {},
-                            icon:const Icon(Icons.edit_note, color: Colors.amber),
-                          ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(Icons.delete, color: Colors.red),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
+                final task = tasks[index];
+                return TaskCard(taskModel: task, statusColor: Colors.blue, refreshTaskList: () async {
+                  await  getAllTaskCount();
+                   await getAllTaskStatus();
+                  },);
               },
             ),
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddNewTaskScreen(),
+            ),
+          );
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
+
 
